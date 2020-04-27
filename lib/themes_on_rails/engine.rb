@@ -28,7 +28,9 @@ module ThemesOnRails
         # 2. allow start_with all_ or all-
         # 3. allow all.js and all.css
         relative_entry = Pathname.new(entry).relative_path_from(themes_root).to_s
-        if !%w(.js .css).include?(File.extname(entry)) || relative_entry =~ allowed_assets_regex
+        base_name = File.basename(relative_entry)
+
+        if !base_name.starts_with?('_') || !%w(.js .css .scss).include?(File.extname(entry)) || relative_entry =~ allowed_assets_regex
           app.config.assets.precompile << entry
         end
       end
